@@ -5,8 +5,7 @@
   <vendor email="akiomik@gmail.com" url="http://github.com/akiomik">Akiomi KAMAKURA</vendor>
 
   <description><![CDATA[
-      Enter short description for your plugin here.<br>
-      <em>most HTML tags may be used</em>
+      Plugin for Android development with Scala
     ]]></description>
 
   <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Build+Number+Ranges for description -->
