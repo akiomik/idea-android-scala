@@ -1,0 +1,12 @@
+package ${PACKAGE_NAME}
+
+import android.app.Activity
+import android.os.Bundle
+
+#parse("File Header.java")
+class ${NAME} extends Activity {
+  @Override
+  def onCreate(Bundle savedInstanceState): Unit {
+    super.onCreate(savedInstanceState)
+  }
+}
