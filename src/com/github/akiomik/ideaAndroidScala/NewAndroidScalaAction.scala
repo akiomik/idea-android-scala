@@ -1,17 +1,14 @@
+package com.github.akiomik.ideaAndroidScala
+
+import java.util.Properties
+
 import com.intellij.ide.actions.CreateFileFromTemplateDialog.Builder
 import com.intellij.ide.actions.CreateTemplateInPackageAction
 import com.intellij.ide.fileTemplates.FileTemplateManager
-import com.intellij.openapi.actionSystem.AnActionEvent
-import com.intellij.openapi.actionSystem.DataContext
-import com.intellij.openapi.actionSystem.LangDataKeys
-import com.intellij.openapi.module.Module
 import com.intellij.openapi.project.Project
-import com.intellij.psi.{PsiFileFactory, PsiDirectory, PsiElement}
-import icons.AndroidIcons
+import com.intellij.psi.{PsiDirectory, PsiElement, PsiFileFactory}
 import org.jetbrains.jps.model.java.JavaModuleSourceRootTypes
 import org.jetbrains.plugins.scala.ScalaFileType
-import org.jetbrains.plugins.scala.project._
-import java.util.Properties
 
 
 /**

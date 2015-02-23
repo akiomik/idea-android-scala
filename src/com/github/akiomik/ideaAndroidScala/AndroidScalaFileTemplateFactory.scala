@@ -1,3 +1,5 @@
+package com.github.akiomik.ideaAndroidScala
+
 import com.intellij.ide.fileTemplates._
 import icons.AndroidIcons
 import org.jetbrains.plugins.scala.ScalaFileType

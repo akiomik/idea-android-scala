@@ -21,7 +21,7 @@
 
   <extensions defaultExtensionNs="com.intellij">
     <!-- Add your extensions here -->
-    <fileTemplateGroup implementation="AndroidScalaFileTemplateFactory"/>
+    <fileTemplateGroup implementation="com.github.akiomik.ideaAndroidScala.AndroidScalaFileTemplateFactory"/>
   </extensions>
 
   <application-components>
@@ -34,7 +34,7 @@
 
   <actions>
     <!-- Add your actions here -->
-      <action id="AndroidScala.NewActivity" class="NewAndroidScalaAction">
+      <action id="AndroidScala.NewActivity" class="com.github.akiomik.ideaAndroidScala.NewAndroidScalaAction">
         <add-to-group group-id="NewGroup" anchor="first"/>
       </action>
   </actions>
