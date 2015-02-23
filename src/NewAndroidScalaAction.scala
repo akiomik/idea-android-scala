@@ -49,7 +49,7 @@ class NewAndroidScalaAction extends CreateTemplateInPackageAction[PsiElement](
 
   override def checkPackageExists(psiDirectory: PsiDirectory): Boolean = true
 
-  override def getActionName(psiDirectory: PsiDirectory, s: String, s1: String): String = "piyo"
+  override def getActionName(psiDirectory: PsiDirectory, s: String, s1: String): String = "Android Scala Class"
 
   override def buildDialog(project: Project, psiDirectory: PsiDirectory, builder: Builder) {
     builder.addKind("Activity", null, "Activity.scala")
