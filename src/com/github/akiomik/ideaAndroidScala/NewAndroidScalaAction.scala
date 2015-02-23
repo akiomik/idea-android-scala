@@ -15,8 +15,8 @@ import org.jetbrains.plugins.scala.ScalaFileType
  * Created by akiomi on 15/02/23.
  */
 class NewAndroidScalaAction extends CreateTemplateInPackageAction[PsiElement](
-  "Android Scala Class",
-  "Create new Android Scala class",
+  AndroidScalaBundle("newFile.action.name"),
+  AndroidScalaBundle("newFile.action.description"),
   ScalaFileType.SCALA_FILE_TYPE.getIcon,
   JavaModuleSourceRootTypes.SOURCES
 ) {
@@ -42,11 +42,13 @@ class NewAndroidScalaAction extends CreateTemplateInPackageAction[PsiElement](
 
   override def checkPackageExists(psiDirectory: PsiDirectory): Boolean = true
 
-  override def getActionName(psiDirectory: PsiDirectory, s: String, s1: String): String = "Android Scala Class"
+  override def getActionName(psiDirectory: PsiDirectory, s: String, s1: String): String = {
+    AndroidScalaBundle("newFile.action.name")
+  }
 
   override def buildDialog(project: Project, psiDirectory: PsiDirectory, builder: Builder) {
     builder.addKind("Activity", null, "Activity.scala")
     builder.addKind("Fragment", null, "Fragment.scala")
-    builder.setTitle("Create New Android Scala Class")
+    builder.setTitle(AndroidScalaBundle("newFile.dialog.title"))
   }
 }

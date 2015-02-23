@@ -8,7 +8,7 @@ class AndroidScalaFileTemplateFactory extends FileTemplateGroupDescriptorFactory
   val templates = Seq("Activity.scala", "Fragment.scala")
 
   override def getFileTemplatesDescriptor: FileTemplateGroupDescriptor = {
-    val groupName = "Android Scala"
+    val groupName = AndroidScalaBundle("fileTemplate.groupName")
     val icon = AndroidIcons.Android
     val group = new FileTemplateGroupDescriptor(groupName, icon)
 
