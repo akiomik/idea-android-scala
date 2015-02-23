@@ -34,10 +34,6 @@ class NewAndroidScalaAction extends CreateTemplateInPackageAction[PsiElement](
     props.setProperty("NAME", name.capitalize)
 
     val template = FileTemplateManager.getInstance.getInternalTemplate(templateName)
-    println(template)
-    println(template.getName)
-    println(template.getDescription)
-    println(template.getExtension)
     val text = template.getText(props)
 
     val factory = PsiFileFactory.getInstance(project)
