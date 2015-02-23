@@ -5,8 +5,7 @@ import android.os.Bundle
 
 #parse("File Header.java")
 class ${NAME} extends Activity {
-  @Override
-  def onCreate(Bundle savedInstanceState): Unit {
+  override def onCreate(savedInstanceState: Bundle) {
     super.onCreate(savedInstanceState)
   }
 }
