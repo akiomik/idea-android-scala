@@ -34,6 +34,9 @@
 
   <actions>
     <!-- Add your actions here -->
+      <action id="AndroidScala.NewActivity" class="NewAndroidScalaAction">
+        <add-to-group group-id="NewGroup" anchor="first"/>
+      </action>
   </actions>
 
 </idea-plugin>
