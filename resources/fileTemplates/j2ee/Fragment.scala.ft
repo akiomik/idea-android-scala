@@ -1,0 +1,14 @@
+package ${PACKAGE_NAME}
+
+import android.app.Fragment
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+
+#parse("File Header.java")
+class ${NAME} extends Fragment {
+  override onCreateView(inflater: LayoutInflater, container: ViewGroup, savedInstanceState: Bundle): View = {
+    return null;
+  }
+}
