@@ -2,7 +2,7 @@ import com.intellij.ide.fileTemplates._
 import icons.AndroidIcons
 import org.jetbrains.plugins.scala.ScalaFileType
 
-class AndroidScalaFileTemplateProvider extends FileTemplateGroupDescriptorFactory {
+class AndroidScalaFileTemplateFactory extends FileTemplateGroupDescriptorFactory {
   val templates = Seq("Activity.scala", "Fragment.scala")
 
   override def getFileTemplatesDescriptor: FileTemplateGroupDescriptor = {

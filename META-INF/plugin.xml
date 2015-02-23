@@ -21,7 +21,7 @@
 
   <extensions defaultExtensionNs="com.intellij">
     <!-- Add your extensions here -->
-    <fileTemplateGroup implementation="AndroidScalaFileTemplateProvider"/>
+    <fileTemplateGroup implementation="AndroidScalaFileTemplateFactory"/>
   </extensions>
 
   <application-components>
