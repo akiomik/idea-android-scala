@@ -27,10 +27,11 @@ class NewAndroidScalaAction extends CreateTemplateInPackageAction[PsiElement](
   override def doCreate(directory: PsiDirectory, name: String, templateName: String): PsiElement = {
     val project = directory.getProject
 
-    val props = new Properties(FileTemplateManager.getInstance.getDefaultProperties(project))
+    val templateManager = FileTemplateManager.getInstance
+    val props = new Properties(templateManager.getDefaultProperties(project))
     props.setProperty("NAME", name.capitalize)
 
-    val template = FileTemplateManager.getInstance.getInternalTemplate(templateName)
+    val template = templateManager.getInternalTemplate(templateName)
     val text = template.getText(props)
 
     val factory = PsiFileFactory.getInstance(project)
