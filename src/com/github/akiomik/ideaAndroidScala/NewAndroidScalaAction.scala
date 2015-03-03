@@ -2,11 +2,19 @@ package com.github.akiomik.ideaAndroidScala
 
 import java.util.Properties
 
+import com.android.resources.ResourceType
+import com.intellij.CommonBundle
 import com.intellij.ide.actions.CreateFileFromTemplateDialog.Builder
 import com.intellij.ide.actions.CreateTemplateInPackageAction
 import com.intellij.ide.fileTemplates.FileTemplateManager
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.ui.Messages
+import com.intellij.openapi.util.io.FileUtil
+import com.intellij.psi.xml.XmlFile
 import com.intellij.psi.{PsiDirectory, PsiElement, PsiFileFactory}
+import org.jetbrains.android.actions.CreateResourceFileAction
+import org.jetbrains.android.facet.AndroidFacet
+import org.jetbrains.android.util.AndroidResourceUtil
 import org.jetbrains.jps.model.java.JavaModuleSourceRootTypes
 import org.jetbrains.plugins.scala.ScalaFileType
 
@@ -26,10 +34,25 @@ class NewAndroidScalaAction extends CreateTemplateInPackageAction[PsiElement](
 
   override def doCreate(directory: PsiDirectory, name: String, templateName: String): PsiElement = {
     val project = directory.getProject
+    val className = name.capitalize
+
+    val layoutFile =
+      if (showCreateLayoutFileDialog(className)) {
+        val facet = AndroidFacet.getInstance(directory.getContext)
+        val layoutFile = showLayoutFileConfigDialog(facet, className)
+        layoutFile
+      } else {
+        None
+      }
+    val layoutName = layoutFile match {
+      case Some(xmlFile) => AndroidResourceUtil.getRJavaFieldName(FileUtil.getNameWithoutExtension(xmlFile.getName))
+      case None          => ""
+    }
 
     val templateManager = FileTemplateManager.getInstance
     val props = new Properties(templateManager.getDefaultProperties(project))
-    props.setProperty("NAME", name.capitalize)
+    props.setProperty("CLASS_NAME", className)
+    props.setProperty("LAYOUT_NAME", layoutName)
 
     val template = templateManager.getInternalTemplate(templateName)
     val text = template.getText(props)
@@ -51,5 +74,22 @@ class NewAndroidScalaAction extends CreateTemplateInPackageAction[PsiElement](
     builder.addKind("Activity", null, "Activity.scala")
     builder.addKind("Fragment", null, "Fragment.scala")
     builder.setTitle(AndroidScalaBundle("newFile.dialog.title"))
+  }
+
+  // returns true when checkbox is checked
+  private def showCreateLayoutFileDialog(className: String): Boolean = {
+    val res =
+      Messages.showCheckboxMessageDialog(
+        s"Do you create layout file for '$className'?", "Create Layout file", Array(CommonBundle.getOkButtonText),
+        "Create layout file", false, -1, -1, null, null
+      )
+    res == 0
+  }
+
+  private def showLayoutFileConfigDialog(facet: AndroidFacet, className: String): Option[XmlFile] = {
+    Option(CreateResourceFileAction.createFileResource(
+      facet, ResourceType.LAYOUT, null, null, null, true,
+      s"Create Layout For '$className'", false
+    ))
   }
 }

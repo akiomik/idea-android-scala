@@ -7,8 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 
 #parse("File Header.java")
-class ${NAME} extends Fragment {
-  override onCreateView(inflater: LayoutInflater, container: ViewGroup, savedInstanceState: Bundle): View = {
+class ${CLASS_NAME} extends Fragment {
+  override onCreateView (inflater: LayoutInflater, container: ViewGroup, savedInstanceState: Bundle): View = {
+#if (${LAYOUT_NAME} == "")
     return null;
+#else
+    return inflater.inflate(R.layout.${LAYOUT_NAME}, container, false);
+#end
   }
 }
