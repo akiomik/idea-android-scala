@@ -2,17 +2,15 @@ package ${PACKAGE_NAME}
 
 import android.app.Fragment
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.{LayoutInflater, View, ViewGroup}
 
 #parse("File Header.java")
 class ${CLASS_NAME} extends Fragment {
   override onCreateView (inflater: LayoutInflater, container: ViewGroup, savedInstanceState: Bundle): View = {
 #if (${LAYOUT_NAME} == "")
-    return null;
+    null
 #else
-    return inflater.inflate(R.layout.${LAYOUT_NAME}, container, false);
+    inflater.inflate(R.layout.${LAYOUT_NAME}, container, false)
 #end
   }
 }
