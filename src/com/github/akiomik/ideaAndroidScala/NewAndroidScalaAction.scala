@@ -6,7 +6,7 @@ import com.android.resources.ResourceType
 import com.intellij.CommonBundle
 import com.intellij.ide.actions.CreateFileFromTemplateDialog.Builder
 import com.intellij.ide.actions.CreateTemplateInPackageAction
-import com.intellij.ide.fileTemplates.FileTemplateManager
+import com.intellij.ide.fileTemplates.{FileTemplateManager, JavaTemplateUtil}
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.Messages
 import com.intellij.openapi.util.io.FileUtil
@@ -51,7 +51,8 @@ class NewAndroidScalaAction extends CreateTemplateInPackageAction[PsiElement](
 
     val templateManager = FileTemplateManager.getInstance
     val props = new Properties(templateManager.getDefaultProperties(project))
-    props.setProperty("CLASS_NAME", className)
+    JavaTemplateUtil.setPackageNameAttribute(props, directory)
+    props.setProperty("NAME", className)
     props.setProperty("LAYOUT_NAME", layoutName)
 
     val template = templateManager.getInternalTemplate(templateName)
