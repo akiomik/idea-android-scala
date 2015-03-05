@@ -11,12 +11,14 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.Messages
 import com.intellij.openapi.util.io.FileUtil
 import com.intellij.psi.xml.XmlFile
-import com.intellij.psi.{PsiDirectory, PsiElement, PsiFileFactory}
+import com.intellij.psi.{PsiClass, PsiDirectory, PsiElement, PsiFileFactory}
 import org.jetbrains.android.actions.CreateResourceFileAction
-import org.jetbrains.android.facet.AndroidFacet
-import org.jetbrains.android.util.AndroidResourceUtil
+import org.jetbrains.android.dom.manifest.Manifest
+import org.jetbrains.android.facet.{AndroidFacet, AndroidRootUtil}
+import org.jetbrains.android.util.{AndroidResourceUtil, AndroidUtils}
 import org.jetbrains.jps.model.java.JavaModuleSourceRootTypes
 import org.jetbrains.plugins.scala.ScalaFileType
+import org.jetbrains.plugins.scala.lang.psi.impl.ScalaFileImpl
 
 
 /**
@@ -35,10 +37,10 @@ class NewAndroidScalaAction extends CreateTemplateInPackageAction[PsiElement](
   override def doCreate(directory: PsiDirectory, name: String, templateName: String): PsiElement = {
     val project = directory.getProject
     val className = name.capitalize
+    val facet = AndroidFacet.getInstance(directory.getContext)
 
     val layoutFile =
       if (showCreateLayoutFileDialog(className)) {
-        val facet = AndroidFacet.getInstance(directory.getContext)
         val layoutFile = showLayoutFileConfigDialog(facet, className)
         layoutFile
       } else {
@@ -63,6 +65,13 @@ class NewAndroidScalaAction extends CreateTemplateInPackageAction[PsiElement](
 
     val file = factory.createFileFromText(fileName, ScalaFileType.SCALA_FILE_TYPE, text)
     directory.add(file)
+
+    if (templateName == "Activity.scala") {
+      val clazz = file.asInstanceOf[ScalaFileImpl].getClasses().head
+      addActivityToManifest(clazz, facet, project)
+    }
+
+    file
   }
 
   override def checkPackageExists(psiDirectory: PsiDirectory): Boolean = true
@@ -92,5 +101,15 @@ class NewAndroidScalaAction extends CreateTemplateInPackageAction[PsiElement](
       facet, ResourceType.LAYOUT, null, null, null, true,
       s"Create Layout For '$className'", false
     ))
+  }
+
+  private def addActivityToManifest(clazz: PsiClass, facet: AndroidFacet, project: Project) {
+    val manifestFile = AndroidRootUtil.getPrimaryManifestFile(facet)
+    val manifest = AndroidUtils.loadDomElement(project, manifestFile, classOf[Manifest])
+    val appOpt = Option(manifest.getApplication)
+    for (app <- appOpt) {
+      val activity = app.addActivity()
+      activity.getActivityClass.setValue(clazz)
+    }
   }
 }
