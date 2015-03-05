@@ -41,8 +41,7 @@ class NewAndroidScalaAction extends CreateTemplateInPackageAction[PsiElement](
 
     val layoutFile =
       if (showCreateLayoutFileDialog(className)) {
-        val layoutFile = showLayoutFileConfigDialog(facet, className)
-        layoutFile
+        showLayoutFileConfigDialog(facet, className)
       } else {
         None
       }
@@ -51,14 +50,8 @@ class NewAndroidScalaAction extends CreateTemplateInPackageAction[PsiElement](
       case None          => ""
     }
 
-    val templateManager = FileTemplateManager.getInstance
-    val props = new Properties(templateManager.getDefaultProperties(project))
-    JavaTemplateUtil.setPackageNameAttribute(props, directory)
-    props.setProperty("NAME", className)
-    props.setProperty("LAYOUT_NAME", layoutName)
-
-    val template = templateManager.getInternalTemplate(templateName)
-    val text = template.getText(props)
+    val params = Map("NAME" -> className, "LAYOUT_NAME" -> layoutName)
+    val text = renderTemplate(templateName, directory, params)
 
     val factory = PsiFileFactory.getInstance(project)
     val fileName = s"$name.${ScalaFileType.DEFAULT_EXTENSION}"
@@ -111,5 +104,18 @@ class NewAndroidScalaAction extends CreateTemplateInPackageAction[PsiElement](
       val activity = app.addActivity()
       activity.getActivityClass.setValue(clazz)
     }
+  }
+
+  def renderTemplate(templateName: String, directory: PsiDirectory, params: Map[String, String]): String = {
+    val templateManager = FileTemplateManager.getInstance
+    val project = directory.getProject
+    val props = new Properties(templateManager.getDefaultProperties(project))
+    JavaTemplateUtil.setPackageNameAttribute(props, directory)
+    for (param <- params) {
+      props.setProperty(param._1, param._2)
+    }
+
+    val template = templateManager.getInternalTemplate(templateName)
+    template.getText(props)
   }
 }
