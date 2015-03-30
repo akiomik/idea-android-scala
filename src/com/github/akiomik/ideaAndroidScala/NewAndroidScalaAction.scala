@@ -2,7 +2,7 @@ package com.github.akiomik.ideaAndroidScala
 
 import java.util.Properties
 
-import com.android.resources.ResourceType
+import com.android.resources.ResourceFolderType
 import com.intellij.CommonBundle
 import com.intellij.ide.actions.CreateFileFromTemplateDialog.Builder
 import com.intellij.ide.actions.CreateTemplateInPackageAction
@@ -91,8 +91,8 @@ class NewAndroidScalaAction extends CreateTemplateInPackageAction[PsiElement](
 
   private def showLayoutFileConfigDialog(facet: AndroidFacet, className: String): Option[XmlFile] = {
     Option(CreateResourceFileAction.createFileResource(
-      facet, ResourceType.LAYOUT, null, null, null, true,
-      s"Create Layout For '$className'", false
+      facet, ResourceFolderType.LAYOUT, null, null, null, true,
+      s"Create Layout for '$className'"
     ))
   }
 
