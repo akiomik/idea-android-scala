@@ -9,7 +9,7 @@ IntelliJ plugin for Android development with Scala
 
 * IntelliJ
 * [Scala plugin](https://plugins.jetbrains.com/plugin/1347)
-* [Android Support](https://plugins.jetbrains.com/plugin/1792)
+* [Android Support](https://plugins.jetbrains.com/plugin/1792) >= 10.1.1.0
 
 ## License
 
