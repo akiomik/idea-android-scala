@@ -14,7 +14,7 @@ import com.intellij.openapi.util.io.FileUtil
 import com.intellij.psi.xml.XmlFile
 import com.intellij.psi.{PsiClass, PsiDirectory, PsiElement, PsiFileFactory}
 import org.jetbrains.android.actions.CreateResourceFileAction
-import org.jetbrains.android.dom.manifest.Manifest
+import org.jetbrains.android.dom.manifest.{Application, Manifest}
 import org.jetbrains.android.facet.{AndroidFacet, AndroidRootUtil}
 import org.jetbrains.android.util.{AndroidResourceUtil, AndroidUtils}
 import org.jetbrains.jps.model.java.JavaModuleSourceRootTypes
@@ -39,7 +39,8 @@ class NewAndroidScalaAction extends CreateTemplateInPackageAction[PsiElement](
     val facet = AndroidFacet.getInstance(directory.getContext)
 
     val layoutFile =
-      if (showCreateLayoutFileDialog(className)) {
+      if ((templateName == "Activity.scala" || templateName == "Fragment.scala")
+          && showCreateLayoutFileDialog(className)) {
         showLayoutFileConfigDialog(facet, className)
       } else {
         None
@@ -58,9 +59,10 @@ class NewAndroidScalaAction extends CreateTemplateInPackageAction[PsiElement](
     val file = factory.createFileFromText(fileName, ScalaFileType.SCALA_FILE_TYPE, text)
     directory.add(file)
 
-    if (templateName == "Activity.scala") {
-      val clazz = file.asInstanceOf[ScalaFileImpl].getClasses().head
-      addActivityToManifest(clazz, facet, project)
+    val clazz = file.asInstanceOf[ScalaFileImpl].getClasses().head
+    templateName match {
+      case "Activity.scala"    => addActivityToManifest(clazz, facet, project)
+      case "Application.scala" => addApplicationToManifest(clazz, facet, project)
     }
 
     file
@@ -75,6 +77,7 @@ class NewAndroidScalaAction extends CreateTemplateInPackageAction[PsiElement](
   override def buildDialog(project: Project, psiDirectory: PsiDirectory, builder: Builder) {
     builder.addKind("Activity", null, "Activity.scala")
     builder.addKind("Fragment", null, "Fragment.scala")
+    builder.addKind("Application", null, "Application.scala")
     builder.setTitle(AndroidScalaBundle("newFile.dialog.title"))
   }
 
@@ -95,13 +98,23 @@ class NewAndroidScalaAction extends CreateTemplateInPackageAction[PsiElement](
     ))
   }
 
-  private def addActivityToManifest(clazz: PsiClass, facet: AndroidFacet, project: Project) {
+  private def addToManifest(clazz: PsiClass, facet: AndroidFacet, project: Project)(f: Application => Unit): Unit = {
     val manifestFile = AndroidRootUtil.getPrimaryManifestFile(facet)
     val manifest = AndroidUtils.loadDomElement(project, manifestFile, classOf[Manifest])
-    val appOpt = Option(manifest.getApplication)
-    for (app <- appOpt) {
+    val app = Option(manifest.getApplication)
+    app foreach f
+  }
+
+  private def addActivityToManifest(clazz: PsiClass, facet: AndroidFacet, project: Project) {
+    addToManifest(clazz, facet, project) { app =>
       val activity = app.addActivity()
       activity.getActivityClass.setValue(clazz)
+    }
+  }
+
+  private def addApplicationToManifest(clazz: PsiClass, facet: AndroidFacet, project: Project) {
+    addToManifest(clazz, facet, project) { app =>
+      app.getName.setValue(clazz)
     }
   }
 

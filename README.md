@@ -3,7 +3,7 @@ IntelliJ plugin for Android development with Scala
 
 ## Features
 
-* Add file templates (`Activity.scala`, `Fragment.scala`)
+* Add file templates (`Activity.scala`, `Fragment.scala`, `Application.scala`)
 
 ## Requirements
 
