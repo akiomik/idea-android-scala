@@ -9,6 +9,7 @@ import com.intellij.ide.actions.CreateTemplateInPackageAction
 import com.intellij.ide.fileTemplates.{FileTemplateManager, JavaTemplateUtil}
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.Messages
+import com.intellij.openapi.util.IconLoader
 import com.intellij.openapi.util.io.FileUtil
 import com.intellij.psi.xml.XmlFile
 import com.intellij.psi.{PsiClass, PsiDirectory, PsiElement, PsiFileFactory}
@@ -27,11 +28,9 @@ import org.jetbrains.plugins.scala.lang.psi.impl.ScalaFileImpl
 class NewAndroidScalaAction extends CreateTemplateInPackageAction[PsiElement](
   AndroidScalaBundle("newFile.action.name"),
   AndroidScalaBundle("newFile.action.description"),
-  ScalaFileType.SCALA_FILE_TYPE.getIcon,
+  IconLoader.getIcon("images/android-scala.png"),
   JavaModuleSourceRootTypes.SOURCES
 ) {
-  getTemplatePresentation.setIcon(ScalaFileType.SCALA_FILE_TYPE.getIcon)
-
   override def getNavigationElement(t: PsiElement): PsiElement = t
 
   override def doCreate(directory: PsiDirectory, name: String, templateName: String): PsiElement = {

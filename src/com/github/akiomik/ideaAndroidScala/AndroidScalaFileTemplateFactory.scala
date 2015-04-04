@@ -1,7 +1,7 @@
 package com.github.akiomik.ideaAndroidScala
 
 import com.intellij.ide.fileTemplates._
-import icons.AndroidIcons
+import com.intellij.openapi.util.IconLoader
 import org.jetbrains.plugins.scala.ScalaFileType
 
 class AndroidScalaFileTemplateFactory extends FileTemplateGroupDescriptorFactory {
@@ -9,7 +9,7 @@ class AndroidScalaFileTemplateFactory extends FileTemplateGroupDescriptorFactory
 
   override def getFileTemplatesDescriptor: FileTemplateGroupDescriptor = {
     val groupName = AndroidScalaBundle("fileTemplate.groupName")
-    val icon = AndroidIcons.Android
+    val icon = IconLoader.getIcon("images/android-scala.png")
     val group = new FileTemplateGroupDescriptor(groupName, icon)
 
     for (template <- templates) {
