@@ -1,4 +1,4 @@
-# ![logo](https://rawgit.com/akiomik/idea-android-scala/logo/logo.svg) idea-android-scala
+# ![logo](https://cdn.rawgit.com/akiomik/idea-android-scala/master/logo.svg) idea-android-scala
 IntelliJ plugin for Android development with Scala
 
 ## Features
