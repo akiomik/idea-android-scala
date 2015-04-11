@@ -119,9 +119,9 @@ class NewAndroidScalaAction extends CreateTemplateInPackageAction[PsiElement](
   }
 
   def renderTemplate(templateName: String, directory: PsiDirectory, params: Map[String, String]): String = {
-    val templateManager = FileTemplateManager.getInstance
     val project = directory.getProject
-    val props = new Properties(templateManager.getDefaultProperties(project))
+    val templateManager = FileTemplateManager.getInstance(project)
+    val props = new Properties(templateManager.getDefaultProperties)
     JavaTemplateUtil.setPackageNameAttribute(props, directory)
     for (param <- params) {
       props.setProperty(param._1, param._2)
