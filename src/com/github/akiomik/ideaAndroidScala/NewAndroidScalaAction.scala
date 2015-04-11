@@ -1,7 +1,5 @@
 package com.github.akiomik.ideaAndroidScala
 
-import java.util.Properties
-
 import com.android.resources.ResourceFolderType
 import com.intellij.CommonBundle
 import com.intellij.ide.actions.CreateFileFromTemplateDialog.Builder
@@ -38,9 +36,9 @@ class NewAndroidScalaAction extends CreateTemplateInPackageAction[PsiElement](
     val className = name.capitalize
     val facet = AndroidFacet.getInstance(directory.getContext)
 
+    val canLayOut = templateName == "Activity.scala" || templateName == "Fragment.scala"
     val layoutFile =
-      if ((templateName == "Activity.scala" || templateName == "Fragment.scala")
-          && showCreateLayoutFileDialog(className)) {
+      if (canLayOut && showCreateLayoutFileDialog(className)) {
         showLayoutFileConfigDialog(facet, className)
       } else {
         None
@@ -85,7 +83,8 @@ class NewAndroidScalaAction extends CreateTemplateInPackageAction[PsiElement](
   private def showCreateLayoutFileDialog(className: String): Boolean = {
     val res =
       Messages.showCheckboxMessageDialog(
-        s"Do you create layout file for '$className'?", "Create Layout file", Array(CommonBundle.getOkButtonText),
+        s"Do you create layout file for '$className'?",
+        "Create Layout file", Array(CommonBundle.getOkButtonText),
         "Create layout file", false, -1, -1, null, null
       )
     res == 0
@@ -98,7 +97,7 @@ class NewAndroidScalaAction extends CreateTemplateInPackageAction[PsiElement](
     ))
   }
 
-  private def addToManifest(clazz: PsiClass, facet: AndroidFacet, project: Project)(f: Application => Unit): Unit = {
+  private def addToManifest(clazz: PsiClass, facet: AndroidFacet, project: Project)(f: Application => Unit) {
     val manifestFile = AndroidRootUtil.getPrimaryManifestFile(facet)
     val manifest = AndroidUtils.loadDomElement(project, manifestFile, classOf[Manifest])
     val app = Option(manifest.getApplication)
@@ -121,7 +120,7 @@ class NewAndroidScalaAction extends CreateTemplateInPackageAction[PsiElement](
   def renderTemplate(templateName: String, directory: PsiDirectory, params: Map[String, String]): String = {
     val project = directory.getProject
     val templateManager = FileTemplateManager.getInstance(project)
-    val props = new Properties(templateManager.getDefaultProperties)
+    val props = templateManager.getDefaultProperties
     JavaTemplateUtil.setPackageNameAttribute(props, directory)
     for (param <- params) {
       props.setProperty(param._1, param._2)
