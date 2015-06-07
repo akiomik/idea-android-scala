@@ -91,10 +91,11 @@ class NewAndroidScalaAction extends CreateTemplateInPackageAction[PsiElement](
   }
 
   private def showLayoutFileConfigDialog(facet: AndroidFacet, className: String): Option[XmlFile] = {
-    Option(CreateResourceFileAction.createFileResource(
+    val res = CreateResourceFileAction.createFileResource(
       facet, ResourceFolderType.LAYOUT, null, null, null, true,
       s"Create Layout for '$className'"
-    ))
+    )
+    Option(res)
   }
 
   private def addToManifest(clazz: PsiClass, facet: AndroidFacet, project: Project)(f: Application => Unit) {
