@@ -1,7 +1,7 @@
 <idea-plugin version="2">
   <id>com.github.akiomik.ideaAndroidScala</id>
   <name>Android Scala</name>
-  <version>0.1.2</version>
+  <version>0.1.3</version>
   <vendor email="akiomik@gmail.com" url="http://github.com/akiomik">Akiomi KAMAKURA</vendor>
 
   <description><![CDATA[
